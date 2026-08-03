@@ -1,0 +1,52 @@
+# Node
+node_modules/
+npm-debug.log*
+.yarn/*
+.pnp.*
+.vscode/
+.env
+.env.*
+.DS_Store
+
+# Next.js
+.next/
+.out/
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build
+dist/
+
+# Misc
+coverage/
+.idea/
+
+# Database
+*.sqlite
+
+# Local environment
+/local.env
+
+# Optional: Mac
+*.swp
+
+# Ignore backend .env specifically
+backend/.env
+frontend/.env
+
+# JetBrains
+*.iml
+
+# VS Code
+.vscode/*
+
+# public keys
+*.pem

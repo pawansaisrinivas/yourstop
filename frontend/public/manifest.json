@@ -1,0 +1,21 @@
+{
+  "name": "YourStop Studio",
+  "short_name": "YourStop Studio",
+  "description": "We Write • We Design • We Build",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090909",
+  "theme_color": "#FF7A00",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
