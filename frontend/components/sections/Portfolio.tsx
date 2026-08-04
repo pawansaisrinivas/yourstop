@@ -159,7 +159,7 @@ const portfolioProjects: PortfolioProject[] = [
       'Integrated photography, video and social coverage',
     ],
 
-    image: '/images/portfolio/yuva-2025.jpg',
+    image: '/images/portfolio/yuva-2025.png',
   },
 
   {
