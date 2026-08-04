@@ -1,114 +1,392 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, X, Check, Sparkles, FolderGit2 } from 'lucide-react';
+import {
+  ExternalLink,
+  X,
+  Check,
+  Sparkles,
+  FolderGit2,
+  ImageIcon,
+} from 'lucide-react';
+
 import { PortfolioProject } from '@/types';
 import { trackEvent } from '@/lib/analytics';
 
+/* =========================================================
+   YOURSTOP STUDIO — PORTFOLIO PROJECTS
+
+   Add ONE image per project inside:
+
+   frontend/public/images/portfolio/
+========================================================= */
+
 const portfolioProjects: PortfolioProject[] = [
   {
-    id: 'proj-1',
-    name: 'Aura Nexus Platform',
-    client: 'Demo Showcase Project',
+    id: 'education-marketing',
+
+    name: 'Educational Marketing Partner',
+
+    client: 'Higher Education · North India',
+
+    category: 'Marketing',
+
+    tags: ['Strategy', 'Influencer Ops', 'Reels'],
+
+    challenge:
+      'A reputed northern-India university required stronger digital visibility and student-focused outreach through modern social media campaigns.',
+
+    solution:
+      'Developed a student-focused marketing strategy combining influencer collaborations, short-form content, campaign planning and digital communication to strengthen visibility among prospective students.',
+
+    deliverables: [
+      'Marketing Strategy',
+      'Influencer Collaborations',
+      'Student-Focused Campaigns',
+      'Reels & Social Content',
+    ],
+
+    results: [
+      'Strengthened digital visibility',
+      'Student-focused communication strategy',
+      'Integrated influencer and social media outreach',
+    ],
+
+    image: '/images/portfolio/education-marketing.jpg',
+  },
+
+  {
+    id: 'ayyappa-transports',
+
+    name: 'Ayyappa Transports',
+
+    client: 'Business · Transport',
+
     category: 'Web',
-    tags: ['Next.js 15', 'Tailwind', 'Supabase', 'Framer Motion'],
-    challenge: 'Needed a modern, high-speed single-page website to launch a creative SaaS tool with responsive dark aesthetics and smooth scrolling.',
-    solution: 'Designed and engineered an obsidian-themed web application with real-time API integrations, glassmorphism cards, and zero-latency page transitions.',
-    deliverables: ['Custom Web Architecture', 'UI/UX Design System', 'Supabase Backend Setup', 'Performance Optimization'],
-    results: ['99/100 Google Lighthouse Score', 'Sub-second initial render', '100% Mobile Responsive'],
-    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+
+    tags: ['UI/UX', 'Web Development', 'Branding'],
+
+    challenge:
+      'Ayyappa Transports needed a professional digital presence that could represent the business as established, trustworthy and accessible.',
+
+    solution:
+      'Designed and developed a responsive business website with a clean interface, structured service presentation and a professional visual identity focused on trust and usability.',
+
+    deliverables: [
+      'Responsive Website',
+      'UI/UX Design',
+      'Business Branding',
+      'Website Architecture',
     ],
-  },
-  {
-    id: 'proj-2',
-    name: 'Vortex Mobile Experience',
-    client: 'Demo Showcase Project',
-    category: 'UI/UX',
-    tags: ['Figma', 'Prototyping', 'User Flows', 'Design System'],
-    challenge: 'Creating an intuitive fintech mobile app interface focused on speed, micro-interactions, and high contrast accessibility.',
-    solution: 'Constructed an end-to-end design system featuring dark mode palettes, interactive wireframes, component libraries, and user journey maps.',
-    deliverables: ['Interactive Figma Prototypes', 'Mobile Design System', 'User Flow Maps', 'Asset Exports'],
-    results: ['Streamlined 4-step transaction workflow', 'WCAG AA contrast compliant design'],
-    image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=1200&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=80',
+
+    results: [
+      'Professional digital presence',
+      'Responsive experience across devices',
+      'Improved business presentation',
     ],
+
+    image: '/images/portfolio/ayyappa-transports.jpg',
   },
+
   {
-    id: 'proj-3',
-    name: 'Cinematic Brand Reel Series',
-    client: 'Demo Showcase Project',
-    category: 'Reels',
-    tags: ['Short-Form', 'Color Grading', 'Motion Graphics', 'Sound Design'],
-    challenge: 'Transforming raw horizontal event footage into high-impact vertical Instagram reels optimized for social engagement.',
-    solution: 'Edited 6 dynamic 15-second reels with beat-synced visual cuts, custom text animations, and vibrant audio mixing.',
-    deliverables: ['6 Vertical Reels (9:16)', 'Custom Thumbnail Covers', 'Captions & Hashtags', 'Audio Master Files'],
-    results: ['3x average viewer retention rate', 'Optimized for mobile social feeds'],
-    image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=1200&q=80',
+    id: 'kl-university',
+
+    name: 'KL University Collaborations',
+
+    client: '4-Year Partnership',
+
+    category: 'Events',
+
+    tags: ['Samyak', 'Surabhi', 'FemFlare', 'Creative Direction'],
+
+    challenge:
+      'Multiple flagship university events required consistent creative coverage, fast content production and event-specific digital storytelling.',
+
+    solution:
+      'Worked across major KL University events including Samyak, Surabhi, FemFlare and departmental festivals, handling photography, videography, branding, reels and creative direction.',
+
+    deliverables: [
+      'Event Photography',
+      'Videography',
+      'Branding',
+      'Reels & Short-Form Content',
+      'Creative Direction',
+    ],
+
+    results: [
+      'Multi-event creative collaboration',
+      'Real-time event content production',
+      'Consistent visual storytelling across flagship events',
+    ],
+
+    image: '/images/portfolio/kl-university.jpg',
   },
+
   {
-    id: 'proj-4',
-    name: 'Multilingual Explainer Voice Over',
-    client: 'Demo Showcase Project',
-    category: 'Voice',
-    tags: ['English & Regional', 'Studio Audio', 'Mastering', 'Commercial'],
-    challenge: 'Recording crystal-clear, professional voice-overs in English and Hindi for a product launch campaign.',
-    solution: 'Produced studio-quality voice tracks with noise suppression, EQ balancing, and precise timing matching the visual storyboard.',
-    deliverables: ['WAV Studio Masters', 'English & Hindi Track Sync', 'Commercial Usage Rights'],
-    results: ['Broadcast quality sound', 'Perfect pace and tone alignment'],
-    image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=1200&q=80',
+    id: 'yuva-2025',
+
+    name: 'YUVA 2025',
+
+    client: 'Government · Youth Radio',
+
+    category: 'Events',
+
+    tags: [
+      'Strategy',
+      'Photography',
+      'Videography',
+      'Social Campaigns',
+    ],
+
+    challenge:
+      'YUVA 2025 at KL University required a youth-focused media strategy capable of capturing the event while driving live digital engagement.',
+
+    solution:
+      'Partnered with YUVA 2025 at KL University, in association with the Government of Andhra Pradesh, to strategise and run Youth Radio Andhra through live interviews, event storytelling and real-time content.',
+
+    deliverables: [
+      'Youth Radio Strategy',
+      'Live Interviews',
+      'Photography',
+      'Videography',
+      'Social Media Campaigns',
+    ],
+
+    results: [
+      'Real-time event storytelling',
+      'Youth-focused digital engagement',
+      'Integrated photography, video and social coverage',
+    ],
+
+    image: '/images/portfolio/yuva-2025.jpg',
   },
+
   {
-    id: 'proj-5',
-    name: 'Brand Storytelling & Website Copy',
-    client: 'Demo Showcase Project',
-    category: 'Content',
-    tags: ['Copywriting', 'SEO', 'Brand Script', 'Landing Page Copy'],
-    challenge: 'Drafting high-converting website messaging for a tech startup needing concise and punchy communication.',
-    solution: 'Authored complete landing page copy, value propositions, feature breakdowns, and CTA button scripts.',
-    deliverables: ['Website Copy Deck', 'Taglines & Slogans', 'Microcopy & CTA Scripts'],
-    results: ['Clear value positioning', 'Improved landing page clarity'],
-    image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80',
+    id: 'ap-yuva-sankalp',
+
+    name: 'AP Yuva Sankalp',
+
+    client: 'Ministry of Youth Affairs & Sports',
+
+    category: 'Marketing',
+
+    tags: ['Media Strategy', 'Interviews', 'Campaigns'],
+
+    challenge:
+      'The initiative required a media approach that could communicate youth-focused activities effectively while increasing participation and awareness.',
+
+    solution:
+      'Led Youth Radio Andhra strategy and execution, producing media campaigns, interviews and digital storytelling focused on youth participation and public awareness.',
+
+    deliverables: [
+      'Media Strategy',
+      'Youth Radio Execution',
+      'Interviews',
+      'Digital Campaigns',
+      'Content Production',
+    ],
+
+    results: [
+      'Expanded youth-oriented digital storytelling',
+      'Integrated interview and campaign strategy',
+      'Stronger communication around youth participation',
+    ],
+
+    image: '/images/portfolio/ap-yuva-sankalp.jpg',
   },
+
   {
-    id: 'proj-6',
-    name: 'Corporate Documentary Video Edit',
-    client: 'Demo Showcase Project',
-    category: 'Video',
-    tags: ['Premiere Pro', 'DaVinci Resolve', 'Sound Editing', '4K'],
-    challenge: 'Editing 2 hours of multi-camera corporate event footage into a polished 3-minute recap film.',
-    solution: 'Synthesized speeches, b-roll shots, ambient soundscapes, and graphic lower-thirds into a cohesive visual story.',
-    deliverables: ['4K Final Render', 'Social Teaser Trailer', 'Project Archival Files'],
-    results: ['Engaging narrative flow', 'Seamless multi-cam cuts'],
-    image: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=1200&q=80',
+    id: 'udbhav-2025',
+
+    name: 'UDBHAV 2025',
+
+    client: 'Ministry of Tribal Affairs · KL University',
+
+    category: 'Events',
+
+    tags: [
+      'Real-time Reels',
+      'Photography',
+      'Event Highlights',
+    ],
+
+    challenge:
+      'The National EMRS Cultural Festival required rapid creative production capable of documenting performances and publishing high-quality content while the festival was still underway.',
+
+    solution:
+      'Worked as a creative partner for the National EMRS Cultural Festival, delivering instant reels, promotional videos, photography and real-time digital content directly from the festival.',
+
+    deliverables: [
+      'Instant Reels',
+      'Promotional Videos',
+      'Event Photography',
+      'Event Highlights',
+      'Real-Time Digital Content',
+    ],
+
+    results: [
+      'Real-time festival content delivery',
+      'Rapid social media production',
+      'Comprehensive visual coverage of the cultural festival',
+    ],
+
+    image: '/images/portfolio/udbhav-2025.jpg',
   },
 ];
 
-const categories = ['All', 'Web', 'UI/UX', 'Video', 'Reels', 'Voice', 'Content'];
+/* =========================================================
+   FILTER CATEGORIES
+========================================================= */
+
+const categories = ['All', 'Web', 'Marketing', 'Events'];
+
+/* =========================================================
+   PROJECT IMAGE WITH FALLBACK
+========================================================= */
+
+function ProjectImage({
+  src,
+  alt,
+  className = '',
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError) {
+    return (
+      <div
+        className={`w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-studio-orange/30 via-studio-charcoal to-studio-black ${className}`}
+      >
+        <div className="w-14 h-14 rounded-2xl bg-black/30 border border-white/10 flex items-center justify-center">
+          <ImageIcon className="w-6 h-6 text-studio-orange" />
+        </div>
+
+        <p className="mt-3 text-[10px] uppercase tracking-[0.18em] text-white/40 font-mono">
+          YourStop Studio
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      onError={() => setHasError(true)}
+      className={className}
+      loading="lazy"
+    />
+  );
+}
+
+/* =========================================================
+   PORTFOLIO COMPONENT
+========================================================= */
 
 export default function Portfolio() {
-  const [activeCategory, setActiveCategory] = useState<string>('All');
-  const [selectedProject, setSelectedProject] = useState<PortfolioProject | null>(null);
+  const [activeCategory, setActiveCategory] =
+    useState<string>('All');
 
-  const filteredProjects = activeCategory === 'All'
-    ? portfolioProjects
-    : portfolioProjects.filter((p) => p.category === activeCategory);
+  const [selectedProject, setSelectedProject] =
+    useState<PortfolioProject | null>(null);
+
+  const filteredProjects =
+    activeCategory === 'All'
+      ? portfolioProjects
+      : portfolioProjects.filter(
+          (project) => project.category === activeCategory
+        );
+
+  /* Disable background scrolling when modal opens */
+
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedProject]);
+
+  /* Close modal with ESC */
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedProject(null);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, []);
 
   const handleOpenProject = (project: PortfolioProject) => {
     setSelectedProject(project);
-    trackEvent('portfolio_modal_open', 'Portfolio', project.name);
+
+    trackEvent(
+      'portfolio_modal_open',
+      'Portfolio',
+      project.name
+    );
+  };
+
+  const handleStartProject = () => {
+    if (!selectedProject) return;
+
+    trackEvent(
+      'portfolio_start_similar_project',
+      'Portfolio',
+      selectedProject.name
+    );
+
+    setSelectedProject(null);
+
+    setTimeout(() => {
+      const bookSection =
+        document.getElementById('book') ||
+        document.getElementById('contact');
+
+      if (bookSection) {
+        bookSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
+    }, 200);
   };
 
   return (
-    <section id="portfolio" className="py-24 bg-studio-black relative overflow-hidden">
+    <section
+      id="portfolio"
+      className="py-24 bg-studio-black relative overflow-hidden"
+    >
+      {/* Background Effects */}
+
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-40 -left-40 w-[450px] h-[450px] rounded-full bg-studio-orange/5 blur-[120px]" />
+
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-studio-orange/5 blur-[150px]" />
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Section Header */}
+
+        {/* =================================================
+            HEADER
+        ================================================= */}
+
         <div className="text-center max-w-3xl mx-auto mb-12">
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -116,7 +394,8 @@ export default function Portfolio() {
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-studio-orange/10 border border-studio-orange/30 text-studio-orange text-xs font-semibold uppercase tracking-wider mb-4"
           >
             <FolderGit2 className="w-3.5 h-3.5" />
-            <span>Showcase & Work</span>
+
+            <span>Our Work</span>
           </motion.div>
 
           <motion.h2
@@ -126,7 +405,10 @@ export default function Portfolio() {
             transition={{ delay: 0.1 }}
             className="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight"
           >
-            Crafted With <span className="text-orange-gradient">Precision & Passion</span>
+            Work That Speaks{' '}
+            <span className="text-orange-gradient">
+              For Itself
+            </span>
           </motion.h2>
 
           <motion.p
@@ -134,220 +416,519 @@ export default function Portfolio() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="mt-4 text-sm sm:text-base text-studio-muted"
+            className="mt-4 text-sm sm:text-base text-studio-muted leading-relaxed"
           >
-            Explore selected demo projects demonstrating our multi-disciplinary execution. Click any project to open detailed case study modal.
+            From government initiatives and university
+            flagship events to business websites and digital
+            campaigns, explore selected projects and
+            collaborations delivered by YourStop Studio.
           </motion.p>
+
         </div>
 
-        {/* Filter Buttons */}
+        {/* =================================================
+            FILTER BUTTONS
+        ================================================= */}
+
         <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => {
-                setActiveCategory(cat);
-                trackEvent('portfolio_filter_click', 'Portfolio', cat);
-              }}
-              className={`px-4 py-2 text-xs font-semibold rounded-full transition-all duration-300 ${
-                activeCategory === cat
-                  ? 'bg-studio-orange text-white shadow-glow'
-                  : 'bg-studio-charcoal border border-studio-border text-studio-muted hover:text-white hover:border-white/20'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+
+          {categories.map((category) => {
+            const isActive =
+              activeCategory === category;
+
+            return (
+              <button
+                key={category}
+                type="button"
+                onClick={() => {
+                  setActiveCategory(category);
+
+                  trackEvent(
+                    'portfolio_filter_click',
+                    'Portfolio',
+                    category
+                  );
+                }}
+                className={`
+                  px-4 py-2
+                  text-xs
+                  font-semibold
+                  rounded-full
+                  transition-all
+                  duration-300
+                  ${
+                    isActive
+                      ? 'bg-studio-orange text-white shadow-glow'
+                      : 'bg-studio-charcoal border border-studio-border text-studio-muted hover:text-white hover:border-studio-orange/40'
+                  }
+                `}
+              >
+                {category}
+              </button>
+            );
+          })}
+
         </div>
 
-        {/* Portfolio Cards Grid */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence>
+        {/* =================================================
+            PROJECT GRID
+        ================================================= */}
+
+        <motion.div
+          layout
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+
+          <AnimatePresence mode="popLayout">
+
             {filteredProjects.map((project) => (
-              <motion.div
+
+              <motion.article
                 layout
                 key={project.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                onClick={() => handleOpenProject(project)}
-                className="bg-glass-card rounded-3xl overflow-hidden border border-studio-border hover:border-studio-orange/60 transition-all duration-300 group cursor-pointer flex flex-col"
+                initial={{
+                  opacity: 0,
+                  scale: 0.96,
+                  y: 20,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.96,
+                }}
+                transition={{
+                  duration: 0.3,
+                }}
+                onClick={() =>
+                  handleOpenProject(project)
+                }
+                className="
+                  bg-glass-card
+                  rounded-3xl
+                  overflow-hidden
+                  border
+                  border-studio-border
+                  hover:border-studio-orange/60
+                  transition-all
+                  duration-300
+                  group
+                  cursor-pointer
+                  flex
+                  flex-col
+                  hover:-translate-y-1
+                  hover:shadow-2xl
+                  hover:shadow-orange-500/5
+                "
               >
-                {/* Image Box */}
+
+                {/* PROJECT IMAGE */}
+
                 <div className="relative h-56 w-full overflow-hidden bg-studio-charcoal">
-                  <img
+
+                  <ProjectImage
                     src={project.image}
-                    alt={project.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    alt={`${project.name} — YourStop Studio`}
+                    className="
+                      w-full
+                      h-full
+                      object-cover
+                      group-hover:scale-105
+                      transition-transform
+                      duration-700
+                    "
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-studio-black via-transparent to-transparent opacity-80" />
-                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-studio-black/80 backdrop-blur-md text-[11px] font-mono text-studio-orange border border-studio-orange/30">
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-studio-black/90 via-black/10 to-transparent pointer-events-none" />
+
+                  <span
+                    className="
+                      absolute
+                      top-4
+                      left-4
+                      px-3
+                      py-1
+                      rounded-full
+                      bg-studio-black/80
+                      backdrop-blur-md
+                      text-[10px]
+                      sm:text-[11px]
+                      font-mono
+                      uppercase
+                      tracking-wider
+                      text-studio-orange
+                      border
+                      border-studio-orange/30
+                    "
+                  >
                     {project.category}
                   </span>
+
                 </div>
 
-                {/* Card Content */}
+                {/* PROJECT CONTENT */}
+
                 <div className="p-6 flex-1 flex flex-col justify-between">
+
                   <div>
-                    <h3 className="text-xl font-display font-bold text-white group-hover:text-studio-orange transition-colors">
+
+                    <p className="text-[10px] uppercase tracking-[0.16em] text-studio-orange/80 font-mono mb-2">
+                      {project.client}
+                    </p>
+
+                    <h3 className="text-xl font-display font-bold text-white group-hover:text-studio-orange transition-colors duration-300">
                       {project.name}
                     </h3>
-                    <p className="text-xs text-studio-muted mt-1 font-mono">{project.client}</p>
-                    <p className="mt-3 text-xs text-studio-white/70 line-clamp-2 leading-relaxed">
+
+                    <p className="mt-3 text-xs sm:text-sm text-studio-muted line-clamp-3 leading-relaxed">
                       {project.challenge}
                     </p>
+
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.tags.slice(0, 2).map((t) => (
-                        <span key={t} className="text-[10px] px-2 py-0.5 rounded bg-white/5 text-studio-muted">
-                          {t}
+                  {/* TAGS */}
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+
+                    {project.tags
+                      .slice(0, 3)
+                      .map((tag) => (
+
+                        <span
+                          key={tag}
+                          className="text-[10px] px-2.5 py-1 rounded-full border border-white/10 bg-white/[0.03] text-studio-muted font-mono"
+                        >
+                          {tag}
                         </span>
+
                       ))}
-                    </div>
-                    <span className="text-xs font-semibold text-studio-orange group-hover:underline flex items-center gap-1">
-                      View Case Study <ExternalLink className="w-3.5 h-3.5" />
-                    </span>
+
                   </div>
+
+                  {/* VIEW PROJECT */}
+
+                  <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+
+                    <span className="text-[10px] uppercase tracking-wider text-white/30">
+                      Case Study
+                    </span>
+
+                    <span className="text-xs font-semibold text-studio-orange flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
+                      View Project
+
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </span>
+
+                  </div>
+
                 </div>
-              </motion.div>
+
+              </motion.article>
+
             ))}
+
           </AnimatePresence>
+
         </motion.div>
 
       </div>
 
-      {/* Interactive Case Study Modal Overlay */}
+      {/* ===================================================
+          PROJECT MODAL
+      ==================================================== */}
+
       <AnimatePresence>
+
         {selectedProject && (
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-xl overflow-y-auto"
-            onClick={() => setSelectedProject(null)}
+            className="
+              fixed
+              inset-0
+              z-[100]
+              flex
+              items-center
+              justify-center
+              p-3
+              sm:p-6
+              bg-black/85
+              backdrop-blur-xl
+              overflow-y-auto
+            "
+            onClick={() =>
+              setSelectedProject(null)
+            }
           >
+
             <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-studio-charcoal border border-studio-orange/40 rounded-3xl max-w-3xl w-full p-6 sm:p-8 relative shadow-2xl overflow-hidden my-8 max-h-[90vh] overflow-y-auto"
+              initial={{
+                scale: 0.96,
+                opacity: 0,
+                y: 25,
+              }}
+              animate={{
+                scale: 1,
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                scale: 0.96,
+                opacity: 0,
+                y: 25,
+              }}
+              transition={{
+                duration: 0.25,
+              }}
+              onClick={(event) =>
+                event.stopPropagation()
+              }
+              className="
+                bg-studio-charcoal
+                border
+                border-studio-orange/30
+                rounded-3xl
+                max-w-4xl
+                w-full
+                relative
+                shadow-2xl
+                my-8
+                max-h-[92vh]
+                overflow-y-auto
+              "
             >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-5 right-5 p-2.5 rounded-full bg-studio-black text-studio-muted hover:text-white hover:bg-studio-orange transition-all"
-                aria-label="Close modal"
-              >
-                <X className="w-5 h-5" />
-              </button>
 
-              {/* Header */}
-              <div className="flex items-center gap-2 text-xs font-mono text-studio-orange uppercase tracking-wider mb-2">
-                <span>Case Study</span> • <span>{selectedProject.category}</span>
-              </div>
-              <h2 className="text-2xl sm:text-4xl font-display font-extrabold text-white">
-                {selectedProject.name}
-              </h2>
-              <p className="text-xs font-mono text-studio-muted mt-1">{selectedProject.client}</p>
+              {/* MODAL HERO IMAGE */}
 
-              {/* Main Banner Image */}
-              <div className="mt-6 rounded-2xl overflow-hidden h-64 sm:h-80 w-full relative">
-                <img
+              <div className="relative h-60 sm:h-80 md:h-[380px] overflow-hidden rounded-t-3xl">
+
+                <ProjectImage
                   src={selectedProject.image}
-                  alt={selectedProject.name}
+                  alt={`${selectedProject.name} — YourStop Studio`}
                   className="w-full h-full object-cover"
                 />
-              </div>
 
-              {/* Challenge & Solution */}
-              <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-5 rounded-2xl bg-studio-black/80 border border-white/5">
-                  <h4 className="text-sm font-bold text-studio-orange uppercase tracking-wide mb-2">
-                    The Challenge
-                  </h4>
-                  <p className="text-xs sm:text-sm text-studio-muted leading-relaxed">
-                    {selectedProject.challenge}
-                  </p>
-                </div>
-                <div className="p-5 rounded-2xl bg-studio-black/80 border border-white/5">
-                  <h4 className="text-sm font-bold text-studio-orange uppercase tracking-wide mb-2">
-                    Our Solution
-                  </h4>
-                  <p className="text-xs sm:text-sm text-studio-muted leading-relaxed">
-                    {selectedProject.solution}
-                  </p>
-                </div>
-              </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-studio-charcoal via-studio-charcoal/20 to-black/20" />
 
-              {/* Deliverables & Results */}
-              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="text-sm font-bold text-white mb-3">Key Deliverables</h4>
-                  <div className="space-y-2">
-                    {selectedProject.deliverables.map((item) => (
-                      <div key={item} className="flex items-center gap-2 text-xs text-studio-white/80">
-                        <Check className="w-4 h-4 text-studio-orange shrink-0" />
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                {/* CLOSE */}
 
-                <div>
-                  <h4 className="text-sm font-bold text-white mb-3">Project Results</h4>
-                  <div className="space-y-2">
-                    {selectedProject.results.map((res) => (
-                      <div key={res} className="flex items-center gap-2 text-xs text-emerald-400">
-                        <Sparkles className="w-4 h-4 shrink-0" />
-                        <span>{res}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Gallery Images if present */}
-              {selectedProject.gallery && selectedProject.gallery.length > 0 && (
-                <div className="mt-8 pt-6 border-t border-white/10">
-                  <h4 className="text-sm font-bold text-white mb-4">Project Gallery</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    {selectedProject.gallery.map((imgUrl, i) => (
-                      <div key={i} className="rounded-xl overflow-hidden h-36">
-                        <img src={imgUrl} alt="Gallery item" className="w-full h-full object-cover" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Bottom Action */}
-              <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between">
-                <div className="flex flex-wrap gap-2">
-                  {selectedProject.tags.map((t) => (
-                    <span key={t} className="text-xs px-3 py-1 rounded-full bg-studio-black border border-white/10 text-studio-muted">
-                      {t}
-                    </span>
-                  ))}
-                </div>
                 <button
-                  onClick={() => {
-                    setSelectedProject(null);
-                    const bookSection = document.getElementById('book');
-                    if (bookSection) bookSection.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-6 py-2.5 rounded-xl bg-studio-orange text-xs font-bold text-white shadow-glow hover:bg-orange-600 transition-colors"
+                  type="button"
+                  onClick={() =>
+                    setSelectedProject(null)
+                  }
+                  className="
+                    absolute
+                    top-5
+                    right-5
+                    p-2.5
+                    rounded-full
+                    bg-black/70
+                    backdrop-blur-md
+                    border
+                    border-white/10
+                    text-white/70
+                    hover:text-white
+                    hover:bg-studio-orange
+                    transition-all
+                  "
+                  aria-label="Close project"
                 >
-                  Start Similar Project
+                  <X className="w-5 h-5" />
                 </button>
+
+              </div>
+
+              {/* MODAL CONTENT */}
+
+              <div className="p-6 sm:p-8">
+
+                <div className="flex items-center gap-2 text-[10px] sm:text-xs font-mono text-studio-orange uppercase tracking-wider mb-3">
+
+                  <span>Case Study</span>
+
+                  <span className="text-white/30">
+                    •
+                  </span>
+
+                  <span>
+                    {selectedProject.category}
+                  </span>
+
+                </div>
+
+                <h2 className="text-2xl sm:text-4xl font-display font-extrabold text-white">
+                  {selectedProject.name}
+                </h2>
+
+                <p className="text-xs sm:text-sm font-mono text-studio-muted mt-2">
+                  {selectedProject.client}
+                </p>
+
+                {/* CHALLENGE + SOLUTION */}
+
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                  <div className="p-5 sm:p-6 rounded-2xl bg-studio-black/70 border border-white/5">
+
+                    <h4 className="text-xs sm:text-sm font-bold text-studio-orange uppercase tracking-wide mb-3">
+                      The Challenge
+                    </h4>
+
+                    <p className="text-xs sm:text-sm text-studio-muted leading-relaxed">
+                      {selectedProject.challenge}
+                    </p>
+
+                  </div>
+
+                  <div className="p-5 sm:p-6 rounded-2xl bg-studio-black/70 border border-white/5">
+
+                    <h4 className="text-xs sm:text-sm font-bold text-studio-orange uppercase tracking-wide mb-3">
+                      Our Solution
+                    </h4>
+
+                    <p className="text-xs sm:text-sm text-studio-muted leading-relaxed">
+                      {selectedProject.solution}
+                    </p>
+
+                  </div>
+
+                </div>
+
+                {/* DELIVERABLES + RESULTS */}
+
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                  {/* DELIVERABLES */}
+
+                  <div>
+
+                    <h4 className="text-sm font-bold text-white mb-4">
+                      Key Deliverables
+                    </h4>
+
+                    <div className="space-y-3">
+
+                      {selectedProject.deliverables.map(
+                        (item) => (
+
+                          <div
+                            key={item}
+                            className="flex items-start gap-2.5 text-xs sm:text-sm text-studio-white/80"
+                          >
+
+                            <div className="mt-0.5 w-5 h-5 rounded-full bg-studio-orange/10 flex items-center justify-center shrink-0">
+
+                              <Check className="w-3 h-3 text-studio-orange" />
+
+                            </div>
+
+                            <span>
+                              {item}
+                            </span>
+
+                          </div>
+
+                        )
+                      )}
+
+                    </div>
+
+                  </div>
+
+                  {/* RESULTS */}
+
+                  <div>
+
+                    <h4 className="text-sm font-bold text-white mb-4">
+                      Project Outcomes
+                    </h4>
+
+                    <div className="space-y-3">
+
+                      {selectedProject.results.map(
+                        (result) => (
+
+                          <div
+                            key={result}
+                            className="flex items-start gap-2.5 text-xs sm:text-sm text-emerald-400"
+                          >
+
+                            <Sparkles className="w-4 h-4 mt-0.5 shrink-0" />
+
+                            <span>
+                              {result}
+                            </span>
+
+                          </div>
+
+                        )
+                      )}
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                {/* TAGS + CTA */}
+
+                <div className="mt-8 pt-6 border-t border-white/10 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+
+                  <div className="flex flex-wrap gap-2">
+
+                    {selectedProject.tags.map(
+                      (tag) => (
+
+                        <span
+                          key={tag}
+                          className="text-[10px] sm:text-xs px-3 py-1.5 rounded-full bg-studio-black border border-white/10 text-studio-muted font-mono"
+                        >
+                          {tag}
+                        </span>
+
+                      )
+                    )}
+
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleStartProject}
+                    className="
+                      px-6
+                      py-3
+                      rounded-xl
+                      bg-studio-orange
+                      text-xs
+                      sm:text-sm
+                      font-bold
+                      text-white
+                      shadow-glow
+                      hover:bg-orange-600
+                      hover:-translate-y-0.5
+                      transition-all
+                      whitespace-nowrap
+                    "
+                  >
+                    Start Similar Project
+                  </button>
+
+                </div>
+
               </div>
 
             </motion.div>
+
           </motion.div>
+
         )}
+
       </AnimatePresence>
 
     </section>
