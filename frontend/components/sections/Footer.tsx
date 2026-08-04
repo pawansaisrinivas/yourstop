@@ -95,7 +95,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/917995481098"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 p-3 rounded-xl bg-studio-black border border-white/10 hover:border-studio-orange text-xs text-studio-muted hover:text-white transition-colors"
@@ -111,7 +111,7 @@ export default function Footer() {
         {/* Bottom Copyright & Admin Link */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-studio-muted">
           <div>
-            © {new Date().getFullYear()} YourStop Studio. All rights reserved. Built with Next.js 15 & Supabase.
+            © {new Date().getFullYear()} YourStop Studio. All rights reserved. 
           </div>
 
           <div className="flex items-center gap-4">
