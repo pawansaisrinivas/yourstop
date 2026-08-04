@@ -5,10 +5,12 @@ import { StatItem } from '@/types';
 import { Layers, Globe, Code, Sparkles } from 'lucide-react';
 
 const statsList: StatItem[] = [
-  { id: '1', label: 'Projects Delivered', value: 45, suffix: '+', description: 'Websites, UI systems & video edits' },
-  { id: '2', label: 'Creative Collaborations', value: 30, suffix: '+', description: 'Startups, creators & event teams' },
-  { id: '3', label: 'Services Offered', value: 6, suffix: '', description: 'Web, UI, Reels, Video, Voice, Content' },
+  { id: '1', label: 'Projects Delivered', value: 2, suffix: '+', description: 'Content & Video edits' },
+  { id: '2', label: 'Creative Collaborations', value: 3, suffix: '+', description: 'Startups, creators & event teams' },
+  { id: '3', label: 'Universities Served', value: 2, suffix: '', description: 'Reels, Video, Voice, Content' },
+  { id: '3', label: 'Videos Produced', value: 15, suffix: '+', description: 'Reels, Video, Voice, Content' },
   { id: '4', label: 'Languages Supported', value: 5, suffix: '', description: 'English, Telugu, Hindi, Tamil, Odia' },
+  { id: '3', label: 'Students Reached', value: 5000, suffix: '+', description: 'Reels, Video, Voice, Content' },
 ];
 
 export default function Stats() {
