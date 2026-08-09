@@ -59,17 +59,22 @@ const founders = [
     name: 'Pawan Sai Srinivas Panigrahi',
     role: 'Founder',
     image: '/images/team/pawan.png',
+
     description:
-      'Leads the vision, technology, strategy and digital execution at YourStop Studio, bringing together creative thinking and engineering to turn ideas into meaningful digital experiences.',
+      'A Computer Science & Engineering student and tech enthusiast with hands-on expertise in MERN Stack, Java Spring Boot, Python, Power BI, Cloud Technologies, and Automation technology. He has actively led and contributed to large-scale youth, cultural, media, and university events, gaining strong experience in event strategy, coordination, digital promotions, and audience engagement. Bringing together technology, creativity, and event leadership, he founded YourStop Studio to deliver impactful digital and creative solutions for brands, organizations, and emerging ventures.',
+
     linkedin: '#',
     instagram: '#',
   },
+
   {
-    name: 'Gowthu Sri Sasank (Sasi Gowthu)',
+    name: 'Gowthu Sri Sasank',
     role: 'Co-Founder',
     image: '/images/team/sasi.jpg',
+
     description:
-      'Drives creative direction, visual storytelling and collaborative execution, helping transform concepts into engaging content and memorable brand experiences.',
+      'A UI/UX Designer, Game Developer, and Computer Science graduate specializing in Game Development and UX Design. As the Co-Founder of YourStop Studio, he combines creativity with technology to craft intuitive digital experiences, interactive products, and impactful design solutions. He is passionate about solving real-world problems through user-centered design and innovative thinking.',
+
     linkedin: '#',
     instagram: '#',
   },
@@ -379,13 +384,15 @@ export default function About() {
 
           </div>
 
-          {/* Founder Cards */}
+          {/* =================================================
+              FOUNDER CARDS
+          ================================================== */}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
 
             {founders.map((founder, index) => (
 
-              <motion.div
+              <motion.article
                 key={founder.name}
                 initial={{
                   opacity: 0,
@@ -406,20 +413,25 @@ export default function About() {
                 className="
                   group
                   relative
-                  overflow-hidden
+                  min-h-[520px]
+                  sm:min-h-[560px]
                   rounded-3xl
+                  overflow-hidden
                   bg-studio-charcoal
                   border
                   border-studio-border
                   hover:border-studio-orange/50
                   transition-all
                   duration-500
+                  cursor-default
                 "
               >
 
-                {/* Image */}
+                {/* =================================================
+                    BACKGROUND IMAGE
+                ================================================== */}
 
-                <div className="relative aspect-[4/5] overflow-hidden">
+                <div className="absolute inset-0">
 
                   <img
                     src={founder.image}
@@ -430,136 +442,263 @@ export default function About() {
                       h-full
                       object-cover
                       object-center
-                      group-hover:scale-105
-                      transition-transform
+                      transition-all
                       duration-700
+                      ease-out
+                      group-hover:scale-105
+                      group-hover:blur-[2px]
                     "
                   />
 
-                  {/* Gradient */}
+                </div>
 
-                  <div className="
+                {/* =================================================
+                    DEFAULT GRADIENT
+                ================================================== */}
+
+                <div
+                  className="
                     absolute
                     inset-0
                     bg-gradient-to-t
                     from-black
                     via-black/20
                     to-transparent
-                  " />
+                    transition-opacity
+                    duration-500
+                    group-hover:opacity-20
+                  "
+                />
 
-                  {/* Orange hover overlay */}
+                {/* =================================================
+                    HOVER DARK OVERLAY
+                ================================================== */}
 
-                  <div className="
+                <div
+                  className="
                     absolute
                     inset-0
-                    bg-studio-orange/0
-                    group-hover:bg-studio-orange/[0.04]
-                    transition-colors
+                    bg-studio-black/90
+                    opacity-0
+                    group-hover:opacity-100
+                    transition-opacity
                     duration-500
-                  " />
+                  "
+                />
 
-                  {/* Founder information */}
+                {/* =================================================
+                    DEFAULT INFORMATION
+                ================================================== */}
 
-                  <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-7">
+                <div
+                  className="
+                    absolute
+                    left-0
+                    right-0
+                    bottom-0
+                    z-10
+                    p-6
+                    sm:p-7
+                    transition-all
+                    duration-500
+                    group-hover:opacity-0
+                    group-hover:translate-y-5
+                  "
+                >
 
-                    <p className="
+                  <p
+                    className="
                       text-[10px]
                       uppercase
                       tracking-[0.22em]
                       font-mono
                       text-studio-orange
                       mb-2
-                    ">
-                      {founder.role}
-                    </p>
+                    "
+                  >
+                    {founder.role}
+                  </p>
 
-                    <h4 className="
+                  <h4
+                    className="
                       text-xl
                       sm:text-2xl
                       font-display
                       font-bold
                       text-white
                       leading-tight
-                    ">
-                      {founder.name}
-                    </h4>
+                    "
+                  >
+                    {founder.name}
+                  </h4>
 
-                    <p className="
-                      mt-3
+                  <p
+                    className="
+                      mt-4
+                      text-[9px]
+                      uppercase
+                      tracking-[0.18em]
+                      font-mono
+                      text-white/50
+                    "
+                  >
+                    Hover for Bio →
+                  </p>
+
+                </div>
+
+                {/* =================================================
+                    HOVER BIO
+                ================================================== */}
+
+                <div
+                  className="
+                    absolute
+                    inset-0
+                    z-20
+                    flex
+                    flex-col
+                    justify-center
+                    p-7
+                    sm:p-9
+                    opacity-0
+                    translate-y-5
+                    group-hover:opacity-100
+                    group-hover:translate-y-0
+                    transition-all
+                    duration-500
+                    pointer-events-none
+                  "
+                >
+
+                  {/* Role */}
+
+                  <p
+                    className="
+                      text-[10px]
+                      uppercase
+                      tracking-[0.24em]
+                      font-mono
+                      text-studio-orange
+                      mb-4
+                    "
+                  >
+                    {founder.role}
+                  </p>
+
+                  {/* Name */}
+
+                  <h4
+                    className="
+                      text-2xl
+                      sm:text-3xl
+                      font-display
+                      font-bold
+                      text-white
+                      leading-tight
+                    "
+                  >
+                    {founder.name}
+                  </h4>
+
+                  {/* Divider */}
+
+                  <div className="w-12 h-px bg-studio-orange/60 my-5" />
+
+                  {/* Bio */}
+
+                  <p
+                    className="
                       text-xs
                       sm:text-sm
-                      text-white/60
+                      text-studio-muted
                       leading-relaxed
-                      max-w-lg
-                    ">
-                      {founder.description}
-                    </p>
+                      max-w-xl
+                    "
+                  >
+                    {founder.description}
+                  </p>
 
-                    {/* Social links */}
+                  {/* Social Links */}
 
-                    <div className="flex items-center gap-2 mt-5">
+                  <div className="flex items-center gap-2 mt-6">
 
-                      {founder.linkedin !== '#' && (
-                        <a
-                          href={founder.linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`${founder.name} LinkedIn`}
-                          className="
-                            w-9
-                            h-9
-                            rounded-full
-                            bg-white/10
-                            border
-                            border-white/10
-                            flex
-                            items-center
-                            justify-center
-                            text-white/70
-                            hover:text-white
-                            hover:bg-studio-orange
-                            hover:border-studio-orange
-                            transition-all
-                          "
-                        >
-                          <Linkedin className="w-4 h-4" />
-                        </a>
-                      )}
+                    {founder.linkedin !== '#' && (
+                      <a
+                        href={founder.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${founder.name} LinkedIn`}
+                        className="
+                          w-9
+                          h-9
+                          rounded-full
+                          bg-white/5
+                          border
+                          border-white/10
+                          flex
+                          items-center
+                          justify-center
+                          text-white/60
+                          hover:text-white
+                          hover:bg-studio-orange
+                          hover:border-studio-orange
+                          transition-all
+                        "
+                      >
+                        <Linkedin className="w-4 h-4" />
+                      </a>
+                    )}
 
-                      {founder.instagram !== '#' && (
-                        <a
-                          href={founder.instagram}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`${founder.name} Instagram`}
-                          className="
-                            w-9
-                            h-9
-                            rounded-full
-                            bg-white/10
-                            border
-                            border-white/10
-                            flex
-                            items-center
-                            justify-center
-                            text-white/70
-                            hover:text-white
-                            hover:bg-studio-orange
-                            hover:border-studio-orange
-                            transition-all
-                          "
-                        >
-                          <Instagram className="w-4 h-4" />
-                        </a>
-                      )}
+                    {founder.instagram !== '#' && (
+                      <a
+                        href={founder.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${founder.name} Instagram`}
+                        className="
+                          w-9
+                          h-9
+                          rounded-full
+                          bg-white/5
+                          border
+                          border-white/10
+                          flex
+                          items-center
+                          justify-center
+                          text-white/60
+                          hover:text-white
+                          hover:bg-studio-orange
+                          hover:border-studio-orange
+                          transition-all
+                        "
+                      >
+                        <Instagram className="w-4 h-4" />
+                      </a>
+                    )}
 
-                    </div>
+                  </div>
 
+                  {/* Bottom Label */}
+
+                  <div
+                    className="
+                      absolute
+                      bottom-7
+                      right-7
+                      text-[9px]
+                      uppercase
+                      tracking-[0.18em]
+                      font-mono
+                      text-white/25
+                    "
+                  >
+                    YourStop Studio
                   </div>
 
                 </div>
 
-              </motion.div>
+              </motion.article>
 
             ))}
 
