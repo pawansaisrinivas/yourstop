@@ -58,7 +58,7 @@ const founders = [
   {
     name: 'Pawan Sai Srinivas Panigrahi',
     role: 'Founder',
-    image: '/images/team/pawan.jpg',
+    image: '/images/team/pawan.png',
     description:
       'Leads the vision, technology, strategy and digital execution at YourStop Studio, bringing together creative thinking and engineering to turn ideas into meaningful digital experiences.',
     linkedin: '#',
@@ -67,7 +67,7 @@ const founders = [
   {
     name: 'Gowthu Sri Sasank (Sasi Gowthu)',
     role: 'Co-Founder',
-    image: '/images/team/sasank.jpg',
+    image: '/images/team/sasi.jpg',
     description:
       'Drives creative direction, visual storytelling and collaborative execution, helping transform concepts into engaging content and memorable brand experiences.',
     linkedin: '#',
