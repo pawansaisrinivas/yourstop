@@ -20,10 +20,20 @@ const bookingSchema = z.object({
   website: z.string().optional(),
   selected_service: z.string().min(1, 'Please select a service'),
   budget: z.string().min(1, 'Please select your budget range'),
+  scheme_type: z.enum(['Monthly', 'Temporary', 'Permanent']),
+  months_needed: z.string().optional(),
   deadline: z.string().min(1, 'Please select your preferred deadline'),
   project_description: z.string().min(10, 'Description must be at least 10 characters'),
   preferred_communication: z.enum(['WhatsApp', 'Phone', 'Email', 'Instagram']),
   terms_accepted: z.boolean().refine((val) => val === true, 'You must accept the terms to proceed'),
+}).superRefine((data, ctx) => {
+  if (data.scheme_type === 'Monthly' && (!data.months_needed || Number(data.months_needed) < 1)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['months_needed'],
+      message: 'Please enter the number of months needed',
+    });
+  }
 });
 
 type BookingFormFields = z.infer<typeof bookingSchema>;
@@ -35,13 +45,16 @@ const servicesOptions = [
   'Reel Making',
   'Voice Over Services',
   'Content Writing',
+  'Social media Handling',
 ];
 
 const budgetRanges = [
-  'Under $1,000 / ₹25,000',
-  '$1,000 - $3,000 / ₹25k - ₹75k',
-  '$3,000 - $5,000 / ₹75k - ₹1.5L',
-  '$5,000+ / ₹1.5L+',
+  'Below ₹5,000',
+  '₹5,000 - ₹10,000',
+  '₹10,000 - ₹15,000',
+  '₹15,000 - ₹20,000',
+  '₹20,000 - ₹25,000',
+  '₹30,000 and above',
 ];
 
 const deadlineOptions = [
@@ -73,7 +86,9 @@ export default function Booking({ selectedServiceFromProp }: BookingProps) {
     resolver: zodResolver(bookingSchema),
     defaultValues: {
       selected_service: selectedServiceFromProp || 'Website Development',
-      budget: '$1,000 - $3,000 / ₹25k - ₹75k',
+      budget: '₹5,000 - ₹10,000',
+      scheme_type: 'Temporary',
+      months_needed: '',
       deadline: '2 Weeks',
       preferred_communication: 'WhatsApp',
       terms_accepted: true,
@@ -387,6 +402,41 @@ export default function Booking({ selectedServiceFromProp }: BookingProps) {
                         ))}
                       </select>
                     </div>
+                  </div>
+
+                  {/* Scheme Type */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-studio-white mb-1.5">
+                        Scheme Type
+                      </label>
+                      <select
+                        {...register('scheme_type')}
+                        className="w-full px-4 py-3 rounded-xl bg-studio-black border border-white/10 text-sm text-white focus:border-studio-orange focus:outline-none transition-colors"
+                      >
+                        <option value="Monthly" className="bg-studio-charcoal text-white">Monthly</option>
+                        <option value="Temporary" className="bg-studio-charcoal text-white">Temporary</option>
+                        <option value="Permanent" className="bg-studio-charcoal text-white">Permanent</option>
+                      </select>
+                    </div>
+
+                    {watch('scheme_type') === 'Monthly' && (
+                      <div>
+                        <label className="block text-xs font-semibold text-studio-white mb-1.5">
+                          Number of Months Needed *
+                        </label>
+                        <input
+                          type="number"
+                          min="1"
+                          placeholder="e.g. 3"
+                          {...register('months_needed')}
+                          className="w-full px-4 py-3 rounded-xl bg-studio-black border border-white/10 text-sm text-white placeholder-studio-muted focus:border-studio-orange focus:outline-none transition-colors"
+                        />
+                        {errors.months_needed && (
+                          <p className="mt-1 text-xs text-red-400">{errors.months_needed.message}</p>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <div>
