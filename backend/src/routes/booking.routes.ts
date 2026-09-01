@@ -24,6 +24,28 @@ const bookingSchema = z.object({
   project_description: z.string().min(10, 'Description must be at least 10 characters'),
   preferred_communication: z.enum(['WhatsApp', 'Phone', 'Email', 'Instagram']),
   turnstileToken: z.string().optional(),
+
+  // Added: Scheme Type
+  scheme_type: z.enum(['Monthly', 'Temporary', 'Permanent']).optional(),
+
+  // Added: Number of Months Needed
+  months_needed: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if (data.scheme_type === 'Monthly') {
+    if (!data.months_needed || data.months_needed.trim() === '') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['months_needed'],
+        message: 'Number of months is required for Monthly scheme',
+      });
+    } else if (!/^[1-9]\d*$/.test(data.months_needed.trim())) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['months_needed'],
+        message: 'Number of months must be a valid positive number',
+      });
+    }
+  }
 });
 
 const generateHumanBookingId = (): string => {
@@ -77,6 +99,13 @@ bookingRouter.post('/', upload.single('reference_file'), async (req: Request, re
       deadline: validatedData.deadline,
       project_description: validatedData.project_description,
       preferred_communication: validatedData.preferred_communication,
+
+      // Added: Scheme Type
+      scheme_type: validatedData.scheme_type,
+
+      // Added: Number of Months Needed
+      months_needed: validatedData.months_needed,
+
       reference_file_path: filePath,
       reference_file_name: fileName,
       status: 'New',
