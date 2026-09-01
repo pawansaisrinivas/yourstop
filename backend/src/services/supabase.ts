@@ -25,6 +25,13 @@ export interface BookingRecord {
   deadline: string;
   project_description: string;
   preferred_communication: string;
+
+  // Added for Scheme Type
+  scheme_type?: 'Monthly' | 'Temporary' | 'Permanent';
+
+  // Added for Monthly Scheme
+  months_needed?: string;
+
   reference_file_path?: string;
   reference_file_name?: string;
   status: string;
@@ -97,7 +104,6 @@ const localContactsStore: ContactRecord[] = [];
 // saveBooking
 // FIX: Do NOT include locally-generated `id`, `created_at`, or `updated_at`
 // in the Supabase insert payload — the DB generates these with defaults.
-// Sending them caused primary-key conflicts and insert failures.
 // ---------------------------------------------------------------------------
 export const saveBooking = async (
   bookingData: Omit<BookingRecord, 'id' | 'created_at' | 'updated_at'>
