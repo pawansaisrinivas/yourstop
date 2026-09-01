@@ -353,6 +353,8 @@ export default function AdminDashboardPage() {
       'Phone',
       'Service',
       'Budget',
+      'Scheme Type',
+      'Months Needed',
       'Deadline',
       'Status',
       'Communication',
@@ -367,6 +369,8 @@ export default function AdminDashboardPage() {
       b.phone,
       `"${b.selected_service}"`,
       `"${b.budget}"`,
+      `"${b.scheme_type || ''}"`,
+      `"${b.months_needed || ''}"`,
       `"${b.deadline}"`,
       b.status,
       b.preferred_communication,
@@ -661,6 +665,10 @@ export default function AdminDashboardPage() {
 
                 <option value="Content Writing">
                   Content Writing
+                </option>
+
+                <option value="Social media Handling">
+                  Social media Handling
                 </option>
 
               </select>
@@ -1008,6 +1016,36 @@ export default function AdminDashboardPage() {
                 </span>
 
               </div>
+
+              <div>
+
+                <span className="text-studio-muted block">
+                  Scheme Type:
+                </span>
+
+                <span className="font-bold text-white">
+                  {selectedBooking.scheme_type ||
+                    'Not Specified'}
+                </span>
+
+              </div>
+
+              {selectedBooking.scheme_type === 'Monthly' && (
+
+                <div>
+
+                  <span className="text-studio-muted block">
+                    Months Needed:
+                  </span>
+
+                  <span className="font-bold text-white">
+                    {selectedBooking.months_needed ||
+                      'Not Specified'}
+                  </span>
+
+                </div>
+
+              )}
 
               <div>
 
