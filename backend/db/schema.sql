@@ -38,6 +38,13 @@ CREATE TABLE IF NOT EXISTS public.bookings (
   deadline VARCHAR(100) NOT NULL,
   project_description TEXT NOT NULL,
   preferred_communication communication_pref NOT NULL DEFAULT 'WhatsApp',
+
+  -- Scheme Type: Monthly, Temporary, or Permanent
+  scheme_type VARCHAR(20),
+
+  -- Number of months required for Monthly scheme
+  months_needed VARCHAR(10),
+
   reference_file_path TEXT,
   reference_file_name VARCHAR(255),
   status booking_status NOT NULL DEFAULT 'New',
@@ -45,6 +52,11 @@ CREATE TABLE IF NOT EXISTS public.bookings (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Add the new columns safely if the bookings table already existed
+ALTER TABLE public.bookings
+ADD COLUMN IF NOT EXISTS scheme_type VARCHAR(20),
+ADD COLUMN IF NOT EXISTS months_needed VARCHAR(10);
 
 -- 3. Contacts Table
 CREATE TABLE IF NOT EXISTS public.contacts (
@@ -91,11 +103,20 @@ CREATE TABLE IF NOT EXISTS public.notification_logs (
 );
 
 -- 7. Indexes for Query Performance
-CREATE INDEX IF NOT EXISTS idx_bookings_booking_id ON public.bookings(booking_id);
-CREATE INDEX IF NOT EXISTS idx_bookings_status ON public.bookings(status);
-CREATE INDEX IF NOT EXISTS idx_bookings_email ON public.bookings(email);
-CREATE INDEX IF NOT EXISTS idx_bookings_created_at ON public.bookings(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_contacts_created_at ON public.contacts(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_bookings_booking_id
+  ON public.bookings(booking_id);
+
+CREATE INDEX IF NOT EXISTS idx_bookings_status
+  ON public.bookings(status);
+
+CREATE INDEX IF NOT EXISTS idx_bookings_email
+  ON public.bookings(email);
+
+CREATE INDEX IF NOT EXISTS idx_bookings_created_at
+  ON public.bookings(created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_contacts_created_at
+  ON public.contacts(created_at DESC);
 
 -- 8. Updated At Trigger Function
 CREATE OR REPLACE FUNCTION update_modified_column()
@@ -152,7 +173,7 @@ CREATE POLICY "Allow authenticated admins to read admin profiles"
   ON public.admin_profiles FOR SELECT
   USING (auth.role() = 'authenticated');
 
--- Status History & Notification Logs RLS
+-- Status History & Notification Logs
 CREATE POLICY "Allow authenticated admins status history access"
   ON public.booking_status_history FOR ALL
   USING (auth.role() = 'authenticated');
@@ -164,13 +185,27 @@ CREATE POLICY "Allow authenticated admins notification logs access"
 -- =====================================================================
 -- Storage Bucket Setup (Private Bucket for Booking Reference Files)
 -- =====================================================================
-INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+
+INSERT INTO storage.buckets (
+  id,
+  name,
+  public,
+  file_size_limit,
+  allowed_mime_types
+)
 VALUES (
   'booking-references',
   'booking-references',
   false,
   10485760, -- 10MB limit
-  ARRAY['application/pdf', 'image/png', 'image/jpeg', 'image/webp', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+  ARRAY[
+    'application/pdf',
+    'image/png',
+    'image/jpeg',
+    'image/webp',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  ]
 )
 ON CONFLICT (id) DO UPDATE SET public = false;
 
@@ -182,4 +217,7 @@ CREATE POLICY "Allow public upload to booking-references"
 -- Only authenticated admins can download/view uploaded reference files
 CREATE POLICY "Allow admin download from booking-references"
   ON storage.objects FOR SELECT
-  USING (bucket_id = 'booking-references' AND auth.role() = 'authenticated');
+  USING (
+    bucket_id = 'booking-references'
+    AND auth.role() = 'authenticated'
+  );
