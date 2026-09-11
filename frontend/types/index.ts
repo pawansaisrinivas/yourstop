@@ -118,6 +118,9 @@ export interface BookingRecord {
   budget: string;
   deadline: string;
 
+  scheme_type?: string;
+  months_needed?: string | number;
+
   project_description: string;
 
   preferred_communication: string;
