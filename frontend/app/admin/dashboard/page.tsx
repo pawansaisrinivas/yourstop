@@ -22,6 +22,11 @@ import {
 
 import { BookingRecord } from '@/types';
 
+type AdminBookingRecord = BookingRecord & {
+  scheme_type?: string;
+  months_needed?: string | number;
+};
+
 import {
   fetchAdminBookings,
   updateBookingStatusOnServer,
@@ -57,7 +62,7 @@ const allStatuses = [
 ];
 
 export default function AdminDashboardPage() {
-  const [bookings, setBookings] = useState<BookingRecord[]>([]);
+  const [bookings, setBookings] = useState<AdminBookingRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -65,7 +70,7 @@ export default function AdminDashboardPage() {
   const [serviceFilter, setServiceFilter] = useState('All');
 
   const [selectedBooking, setSelectedBooking] =
-    useState<BookingRecord | null>(null);
+    useState<AdminBookingRecord | null>(null);
 
   const [editingNotes, setEditingNotes] = useState('');
   const [editingStatus, setEditingStatus] = useState('');
@@ -75,7 +80,7 @@ export default function AdminDashboardPage() {
   const [isSaving, setIsSaving] = useState(false);
 
   const [confirmDeleteBooking, setConfirmDeleteBooking] =
-    useState<BookingRecord | null>(null);
+    useState<AdminBookingRecord | null>(null);
 
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -214,7 +219,7 @@ export default function AdminDashboardPage() {
   // OPEN BOOKING DETAILS
   // =====================================================
 
-  const handleOpenDetail = (booking: BookingRecord) => {
+  const handleOpenDetail = (booking: AdminBookingRecord) => {
     setSelectedBooking(booking);
     setEditingStatus(booking.status);
     setEditingNotes(booking.internal_notes || '');
