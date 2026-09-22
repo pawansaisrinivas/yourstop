@@ -104,6 +104,8 @@ const localContactsStore: ContactRecord[] = [];
 // saveBooking
 // FIX: Do NOT include locally-generated `id`, `created_at`, or `updated_at`
 // in the Supabase insert payload — the DB generates these with defaults.
+// FIX: Do NOT silently fall back to local storage when Supabase is configured
+// but the database insert fails. Throw the error so the API reports failure.
 // ---------------------------------------------------------------------------
 export const saveBooking = async (
   bookingData: Omit<BookingRecord, 'id' | 'created_at' | 'updated_at'>
@@ -117,16 +119,14 @@ export const saveBooking = async (
       .single();
 
     if (error) {
-      console.error('[Supabase] Booking insert error:', error.message, error.details);
-      // Fall back to local store so the booking is not silently lost
-      const fallback: BookingRecord = {
-        ...bookingData,
-        id: crypto.randomUUID(),
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-      localBookingsStore.unshift(fallback);
-      return fallback;
+      console.error('[Supabase] Booking insert error:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code,
+      });
+
+      throw new Error(`Supabase booking insert failed: ${error.message}`);
     }
 
     return data as BookingRecord;
@@ -139,12 +139,15 @@ export const saveBooking = async (
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   };
+
   localBookingsStore.unshift(record);
   return record;
 };
 
 // ---------------------------------------------------------------------------
 // getBookings
+// FIX: Do NOT silently return local store when Supabase is configured but
+// the database fetch fails. Throw the error so the API reports the problem.
 // ---------------------------------------------------------------------------
 export const getBookings = async (): Promise<BookingRecord[]> => {
   if (supabaseAdmin) {
@@ -154,8 +157,14 @@ export const getBookings = async (): Promise<BookingRecord[]> => {
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('[Supabase] Booking fetch error:', error.message);
-      return localBookingsStore;
+      console.error('[Supabase] Booking fetch error:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code,
+      });
+
+      throw new Error(`Supabase booking fetch failed: ${error.message}`);
     }
 
     return data as BookingRecord[];
@@ -179,7 +188,10 @@ export const updateBookingStatus = async (
       status,
       updated_at: new Date().toISOString(),
     };
-    if (notes !== undefined) updatePayload.internal_notes = notes;
+
+    if (notes !== undefined) {
+      updatePayload.internal_notes = notes;
+    }
 
     const { data, error } = await supabaseAdmin
       .from('bookings')
@@ -189,8 +201,14 @@ export const updateBookingStatus = async (
       .single();
 
     if (error) {
-      console.error('[Supabase] Booking update error:', error.message);
-      return null; // FIX: was falling through to local store incorrectly
+      console.error('[Supabase] Booking update error:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code,
+      });
+
+      return null;
     }
 
     return data as BookingRecord;
@@ -198,12 +216,19 @@ export const updateBookingStatus = async (
 
   // Local fallback
   const existing = localBookingsStore.find((b) => b.booking_id === booking_id);
+
   if (existing) {
     existing.status = status;
-    if (notes !== undefined) existing.internal_notes = notes;
+
+    if (notes !== undefined) {
+      existing.internal_notes = notes;
+    }
+
     existing.updated_at = new Date().toISOString();
+
     return existing;
   }
+
   return null;
 };
 
@@ -218,17 +243,28 @@ export const deleteBooking = async (booking_id: string): Promise<boolean> => {
       .eq('booking_id', booking_id);
 
     if (error) {
-      console.error('[Supabase] Booking delete error:', error.message);
+      console.error('[Supabase] Booking delete error:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code,
+      });
+
       return false;
     }
+
     return true;
   }
 
-  const index = localBookingsStore.findIndex((b) => b.booking_id === booking_id);
+  const index = localBookingsStore.findIndex(
+    (b) => b.booking_id === booking_id
+  );
+
   if (index !== -1) {
     localBookingsStore.splice(index, 1);
     return true;
   }
+
   return false;
 };
 
@@ -252,13 +288,21 @@ export const saveContact = async (
       .single();
 
     if (error) {
-      console.error('[Supabase] Contact insert error:', error.message);
+      console.error('[Supabase] Contact insert error:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code,
+      });
+
       const fallback: ContactRecord = {
         ...insertPayload,
         id: crypto.randomUUID(),
         created_at: new Date().toISOString(),
       };
+
       localContactsStore.unshift(fallback);
+
       return fallback;
     }
 
@@ -270,6 +314,8 @@ export const saveContact = async (
     id: crypto.randomUUID(),
     created_at: new Date().toISOString(),
   };
+
   localContactsStore.unshift(contact);
+
   return contact;
 };
